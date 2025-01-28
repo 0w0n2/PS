@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
     static int r, c;
-    static String [][] map;
+    static char [][] map;
     static int max = 1;
 
     static boolean [] alpha = new boolean[26];
@@ -13,32 +13,29 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         r = Integer.parseInt(st.nextToken()); // 가로
         c = Integer.parseInt(st.nextToken()); // 세로
-        map = new String[r][c];
+        map = new char [r][c];
         for (int i=0;i<r;i++){
             String ip = br.readLine();
             for (int j=0;j<ip.length();j++){
-                map[i][j] = String.valueOf(ip.charAt(j));
+                map[i][j] = ip.charAt(j);
             }
         }
-        alpha[map[0][0].charAt(0)-'A'] = true;
+        // alpha[map[0][0]-'A'] = true;
         dfs(0, 0, 1);
         System.out.println(max);
     }
-    
+
     public static void dfs(int x, int y, int count){
         int [] dx = {1, -1, 0, 0};
         int [] dy = {0, 0, 1, -1};
-        max = Math.max(count, max);
+        if (x<0 || x>=r || y<0 || y>=c || alpha[map[x][y]-'A']) return;
 
-        for (int i=0;i<4;i++){
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (nx<0||nx>=r||ny<0||ny>=c) continue;
-            if (!alpha[map[nx][ny].charAt(0)-'A']) {
-                alpha[map[nx][ny].charAt(0)-'A'] = true;
-                dfs(nx, ny, count+1);
-                alpha[map[nx][ny].charAt(0)-'A'] = false;
-            }
-        }
+        alpha[map[x][y]-'A'] = true;
+        max = Math.max(count, max);
+        dfs(x+dx[0], y+dy[0], count+1);
+        dfs(x+dx[1], y+dy[1], count+1);
+        dfs(x+dx[2], y+dy[2], count+1);
+        dfs(x+dx[3], y+dy[3], count+1);
+        alpha[map[x][y]-'A'] = false;
     }
 }
