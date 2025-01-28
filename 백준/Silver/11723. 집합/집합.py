@@ -1,18 +1,17 @@
 import sys
+input = sys.stdin.readline
 
-tc = int(sys.stdin.readline().rstrip())
+tc = int(input())
 num = [False]*20
 
 for _ in range(tc):
-    ip = sys.stdin.readline().rstrip()
+    ip = list(input().split())
 
-    if (ip=="all"): num = [True]*20
-    elif (ip=="empty"): num = [False]*20
+    if (ip[0]=="all"): num = [True]*20
+    elif (ip[0]=="empty"): num = [False]*20
     else: 
-        c, n = ip.split()
-        n = int(n)
-        if (c=="add"): num[n-1] = True
-        elif (c=="remove"): num[n-1] = False
-        elif (c=="check"):
-            print("1" if num[n-1] else "0")
-        elif (c=="toggle"): num[n-1] = not num[n-1]
+        n = int(ip[1])
+        if (ip[0]=="add"): num[n-1] = True
+        elif (ip[0]=="remove"): num[n-1] = False
+        elif (ip[0]=="check"): print(1 if num[n-1] else 0)
+        elif (ip[0]=="toggle"): num[n-1] = not num[n-1]
