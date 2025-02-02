@@ -1,0 +1,1 @@
+solution = lambda arr : "".join(arr)
