@@ -1,9 +1,9 @@
-import java.io.*;
+import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
         int [][] dp = new int[41][2];
         dp[0][0] = 1;
@@ -16,10 +16,10 @@ public class Main {
             dp[i][1] = dp[i-1][1] + dp[i-2][1];
         }
 
-        int tc = Integer.parseInt(br.readLine());
+        int tc = sc.nextInt();
         StringBuilder sb = new StringBuilder();
         for (int t=0;t<tc;t++){
-            int n = Integer.parseInt(br.readLine());
+            int n = sc.nextInt();
             sb.append(dp[n][0]).append(" ").append(dp[n][1]).append("\n");
         }
         System.out.print(sb);
