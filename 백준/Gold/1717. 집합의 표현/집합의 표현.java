@@ -4,6 +4,7 @@ import java.io.*;
 public class Main {
 	static int n;
 	static int[] par;
+	static int[] height;
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,6 +14,9 @@ public class Main {
 		
 		par = new int[n+1]; // 0부터 n까지 각각 원소 1개씩 갖는 n+1개의 트리를 dat 배열로 구현 
 		Arrays.fill(par, -1); // 현재 각 트리의 최상위 부모는 자기 자신이다(-1)
+		
+		height = new int[n+1];
+		Arrays.fill(height, 1);
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -49,6 +53,13 @@ public class Main {
 		
 		if(a==b) return; // 이미 동일 트리임, 합치기 필요 X
 		
-		par[a] = b; // 합치기
+		// par[a] = b; // 합치기
+		// 두 트리의 높이를 고려하여 합치자(연산 횟수 줄이기)
+		if(height[a]>height[b]) par[b] = a; // a가 더 높으면 a에 b를 붙이기
+		else {
+			par[a] = b; // b에 a를 붙이기
+			
+			if(height[a]==height[b]) height[b]++; // a와 b의 높이가 같다면 b에 a를 붙임과 함께 높이 +1
+		}
 	}
 }
