@@ -11,6 +11,7 @@ public class Main {
 		}
 	}
 	static int[] par;
+	static int[] height;
 	static int maxLineLength = 0;
 	
 	public static void main(String[] args) throws IOException{
@@ -28,6 +29,9 @@ public class Main {
 		
 		par = new int[N+1];
 		Arrays.fill(par, -1);
+		
+		height = new int[N+1];
+		Arrays.fill(height, 1);
 		
 		for (int i=0;i<M;i++) {
 			st = new StringTokenizer(br.readLine());
@@ -58,7 +62,14 @@ public class Main {
 		
 		if (a==b) return 0;
 		
-		par[a] = b;
+		if (height[a]>height[b]) {
+			par[b] = a;
+			height[a] += height[b];
+		} else {
+			par[a] = b;
+			height[b] += height[a];
+		}
+		
 		maxLineLength = Math.max(maxLineLength, costs); // 모두 최소경로로 연결하고, 가장 큰 간선을 잘라버릴 것
 		return costs;
 	}
