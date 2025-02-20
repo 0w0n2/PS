@@ -16,9 +16,8 @@ public class Main {
 		// 모든 (i, j)쌍에 대하여 최소 비용 경로 계산
 		int[][] dist = new int [n+1][n+1];
 		for (int i=1;i<=n;i++) {
-			for (int j=1;j<=n;j++) {
-				dist[i][j] = i==j ? 0 : INF; // 같은 정점끼리의 이동 거리는 0
-			}
+			Arrays.fill(dist[i], INF);
+			dist[i][i] = 0; // 같은 정점끼리의 이동 거리는 0
 		}
 
 		StringTokenizer st;
@@ -33,15 +32,16 @@ public class Main {
 		// 플로이드-워셜
 		for (int a=1; a<=n; a++) {
 			for (int i=1;i<=n;i++) for (int j=1;j<=n;j++) {
-					if (dist[a][j]!=INF && dist[i][a]!=INF && dist[a][j] + dist[i][a] < dist[i][j]) dist[i][j] = dist[a][j] + dist[i][a]; // 갱신
+					if (dist[a][j]!=INF && dist[i][a]!=INF) {
+						dist[i][j] = Math.min(dist[i][j], dist[a][j] + dist[i][a]); // 갱신
+					}
 			}
 		}
 		
 		StringBuilder sb = new StringBuilder();
 		for (int i=1;i<=n;i++) {
 			for (int j=1;j<=n;j++) {
-				if (dist[i][j]==INF) sb.append(0).append(" ");
-				else sb.append(dist[i][j]).append(" ");
+				sb.append(dist[i][j]==INF ? 0:dist[i][j]).append(" ");
 			}
 			sb.append("\n");
 		}
