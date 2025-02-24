@@ -13,8 +13,7 @@ public class Main {
 		for (int t=0;t<tc;t++) {
 			
 			int n = Integer.parseInt(br.readLine()); // 팀의 수(노드 수)
-			ArrayList<ArrayList<Integer>> map = new ArrayList<>();
-			for (int i=0;i<=n;i++) map.add(new ArrayList<>());
+			boolean[][] map = new boolean[n+1][n+1]; // map[i][j] = true : i->j 연결됨, false : 연결 X
 			
 			int[] lastYear = new int[n];
 			StringTokenizer st = new StringTokenizer(br.readLine());
@@ -25,7 +24,7 @@ public class Main {
 			int[] inDegree = new int[n+1];
 			for (int i=0;i<n;i++) {
 				for (int j=i+1;j<n;j++) {
-					map.get(lastYear[i]).add(lastYear[j]);
+					map[lastYear[i]][lastYear[j]] = true; // i->j 관계 성립
 					inDegree[lastYear[j]]++;
 				}
 			}
@@ -36,13 +35,14 @@ public class Main {
 				int start = Integer.parseInt(st.nextToken());
 				int end = Integer.parseInt(st.nextToken());
 				
-				if (map.get(start).remove(Integer.valueOf(end))) { // 원래 순서 start->end 였을 경우, end->start로 반전
-			        map.get(end).add(start);
+				if (map[start][end]) { // 원래 순서 start->end 였을 경우, end->start로 반전
+			        map[start][end] = false;
+			        map[end][start] = true; // 반전
 			        inDegree[end]--;
 			        inDegree[start]++;
 			    } else { // 원래 순서 end->start 였을 경우, start->end로 반전
-			        map.get(start).add(end);
-			        map.get(end).remove(Integer.valueOf(start));
+			        map[end][start] = false;
+			        map[start][end] = true;
 			        inDegree[start]--;
 			        inDegree[end]++;
 			    }
@@ -56,24 +56,27 @@ public class Main {
 			}
 			
 			// 위상 정렬 시작
-			StringBuilder temp = new StringBuilder();
 			for (int i=0;i<n;i++) {
 				// 도중에 큐가 비면 정렬 불가능 (순환 고리 생김)
 				if(q.isEmpty()) {
-					sb.append("IMPOSSIBLE").append("\n");
+					sb.append("IMPOSSIBLE\n");
 					continue Loop1; // 정렬 종료
 				}
 				
 				int current = q.pollFirst();
 				result[i] = current;
-				temp.append(result[i]).append(" ");
 				
-				if (i==(n-1)) sb.append(temp.toString().trim()).append("\n");
-				
-				for (int nextPoint:map.get(current)) {
-					if (--inDegree[nextPoint]==0) q.addLast(nextPoint);
+				for (int nextPoint=1;nextPoint<=n;nextPoint++) {
+					if (map[current][nextPoint]) {
+						if (--inDegree[nextPoint]==0) q.addLast(nextPoint);
+					}
 				}
 			}
+			
+			for (int i=0;i<n;i++) {
+				sb.append(result[i]).append(" ");
+			}
+			sb.append("\n");
 		}
 		System.out.println(sb);
 	}
