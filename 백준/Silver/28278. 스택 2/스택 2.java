@@ -3,6 +3,8 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+	static int[] stack = new int[1_000_000];
+	static int top = 0; // top의 인덱스
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,8 +15,6 @@ public class Main {
 		// 4. 4 : 스택이 비어있으면 1, 아니면 0을 출력 [비어있는지 유무]
 		// 5. 5 : 스택에 정수가 있다면 맨 위의 정수를 출력, 없다면 -1을 대신 출력 [조회]
 		
-		Deque<Integer> stack = new ArrayDeque<>(); // 스택
-		
 		int N = Integer.parseInt(br.readLine()); // 명령의 수 N (<=1_000_000)
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
@@ -22,13 +22,13 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			int cmd = Integer.parseInt(st.nextToken());
 			if (st.countTokens()>0) {
-				stack.offerLast(Integer.parseInt(st.nextToken()));
+				stack[++top] = Integer.parseInt(st.nextToken());
 			}
 			else {
-				if (cmd==2) sb.append(stack.isEmpty() ? -1 : stack.pollLast());
-				else if (cmd==3) sb.append(stack.size());
-				else if (cmd==4) sb.append(stack.isEmpty() ? 1 : 0);
-				else sb.append(stack.isEmpty() ? -1 : stack.getLast());
+				if (cmd==2) sb.append(top==0 ? -1 : stack[top--]);
+				else if (cmd==3) sb.append(top);
+				else if (cmd==4) sb.append(top==0 ? 1 : 0);
+				else sb.append(top==0 ? -1 : stack[top]);
 				sb.append("\n");
 			}
 		}
