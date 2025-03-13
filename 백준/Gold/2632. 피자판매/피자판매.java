@@ -53,11 +53,14 @@ public class Main {
 	
 	static void getResult(HashMap<Integer, Integer> S, HashMap<Integer, Integer> B) {
 		
-		for (int s : S.keySet()) {
-			int key = t - s;
-			if (B.containsKey(key)) {
-				result += S.get(s) * B.get(key);
-			}
+//		for (int s : S.keySet()) {
+//			int key = t - s;
+//			if (B.containsKey(key)) {
+//				result += S.get(s) * B.get(key);
+//			}
+//		}
+		for (int i=1;i<t;i++) {
+			if (S.containsKey(i)&&B.containsKey(t-i)) result += S.get(i) * B.get(t-i);
 		}
 	}
 	
