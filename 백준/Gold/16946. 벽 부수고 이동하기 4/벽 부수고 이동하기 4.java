@@ -38,7 +38,7 @@ public class Main {
 		// 3. map[i][j] == 1 인 곳에 대해서, 상하좌우의 bfs 값을 더해 출력한다
 		StringBuilder sb = new StringBuilder();
 		
-		HashSet<Integer> use;	
+		HashSet<Integer> use = new HashSet<>();	
 		// 상하좌우에 존재하는 0 중에 어느 두 곳 이상이 같은 그룹(영역)에 속하는 0일 때 잘 못 카운팅되지 않도록 사용한 영역을 저장하는 세트
 		// 그룹이란, 상하좌우를 인접한 0들을 기준으로 묶은 영역을 뜻함 
 		
@@ -47,7 +47,7 @@ public class Main {
 				if (map[i][j]!=1) sb.append(0);
 				else { 
 					int sum = 1; // 자기 자신 포함(1)
-					use = new HashSet<>();
+					use.clear();
 					
 					for (int k=0;k<4;k++) { // 상하좌우에 0이 있는지 검사
 						int nx = i + dx[k];
