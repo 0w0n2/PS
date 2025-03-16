@@ -2,52 +2,52 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static ArrayList<ArrayList<Integer>> ip = new ArrayList<>();
-    static boolean check = false;
-    static int n;
-
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine()); // 전체 사람 수
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int start = Integer.parseInt(st.nextToken());
-        int end = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(br.readLine()); // 쌍 수
-        for (int i=0;i<=n;i++) ip.add(new ArrayList<>()); // n+1개로 초기화
-
-        for (int i=0;i<m;i++){
-            st = new StringTokenizer(br.readLine());
-            int v = Integer.parseInt(st.nextToken());
-            int u = Integer.parseInt(st.nextToken());
-            ip.get(v).add(u);
-            ip.get(u).add(v);
-        } // 리스트 입력
-        bfs(start, end);
-        if (!check) System.out.print(-1);
-
-    }
-
-    public static void bfs(int start, int end){
-        int [] isVisited = new int[n+1];
-
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(start);
-        isVisited[start] = 0;
-
-        while(!q.isEmpty()){
-            int v = q.poll();
-            if (v==end){
-                System.out.print(isVisited[v]);
-                check = true;
-                return;
-            }
-            for (int i=0;i<ip.get(v).size();i++){
-                int nv = ip.get(v).get(i);
-                if(isVisited[nv]==0){
-                    q.offer(nv);
-                    isVisited[nv] = isVisited[v] + 1;
-                }
-            }
-        }
-    }
+	static class Family{
+		int v, ct;
+		Family(int v, int ct) {
+			this.v = v;
+			this.ct = ct;
+		}
+	}
+	
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine()); // 사람의 수
+		ArrayList<ArrayList<Integer>> map = new ArrayList<>();
+		for (int i=0;i<N;i++) map.add(new ArrayList<>()); // 초기화
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		Deque<Family> q = new ArrayDeque<>();
+		q.offerLast(new Family(Integer.parseInt(st.nextToken())-1, 0));
+		boolean[] isVisited = new boolean[N];
+		isVisited[q.peek().v] = true;
+		
+		int end = Integer.parseInt(st.nextToken())-1;
+		
+		int M = Integer.parseInt(br.readLine()); // 가족관계의 수
+		for (int i=0;i<M;i++) {
+			st = new StringTokenizer(br.readLine());
+			// 양방향 간선
+			int v = Integer.parseInt(st.nextToken()) - 1;
+			int u = Integer.parseInt(st.nextToken()) - 1;
+			map.get(v).add(u);
+			map.get(u).add(v);
+		}
+		
+		while(!q.isEmpty()) {
+			Family c = q.pollFirst();
+			if (c.v==end) {
+				System.out.print(c.ct);
+				return;
+			}
+			
+			for (int np : map.get(c.v)) {
+				if (!isVisited[np]) {
+					isVisited[np] = true;
+					q.offerLast(new Family(np, c.ct+1));
+				}
+			}
+		}
+		System.out.print(-1);
+	}
 }
