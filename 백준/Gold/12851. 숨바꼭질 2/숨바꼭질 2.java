@@ -31,15 +31,18 @@ public class Main {
 		while(!q.isEmpty()) {
 			
 			Subin c = q.pollFirst();
+			
 			if (c.x==end) {
 				t = c.time;
 				ct++;
 			}
 			
+			if (t!=-1 && c.time+1 > t) continue;
+			
 			for (int i=0;i<3;i++) {
 				int nx = (i<2) ? c.x + dx[i] : c.x * 2;
 				
-				if (nx<0||nx>=100_001||(t!=-1 && c.time+1 > t)) continue;
+				if (nx<0||nx>=100_001) continue;
 				
 				if (isVisited[nx]==0 || isVisited[nx]==c.time+1){
 					isVisited[nx] = c.time+1;
