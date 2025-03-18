@@ -10,7 +10,7 @@ public class Main {
 		int x = 1_000_000_003;
 		
 		// 1. dp 배열 초기화 
-		int[][] dp = new int[N+1][N+1];
+		int[][] dp = new int[N+1][K+1];
 		for (int i=0;i<=N;i++) {
 			dp[i][1] = i; // i개의 색 중 1개의 색을 고르는 경우 (i개 중에서 1개 = i가지 경우)
 			dp[i][0] = 1; // i개의 색 중 0개의 색을 고르는 경우 : 항상 1 (아무것도 선택 x)
