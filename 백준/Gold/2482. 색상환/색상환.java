@@ -17,8 +17,8 @@ public class Main {
 		}
 		
 		// 2. 바텀업 방식으로 i(2~N)개의 색상에서 j(2~K)개를 고르는 경우의 수를 구함
-		for (int i=2;i<=N;i++) {
-			for (int j=2;j<=K;j++) {
+		for (int j=2;j<=K;j++) {
+			for (int i=2;i<=N;i++) {
 				dp[i][j] = (dp[i-2][j-1] + dp[i-1][j])%x; 
 				// i개의 숫자에서 j개를 고르는 경우의 수 : i번째 숫자를 고르는 경우의 수 + i번째 숫자를 고르지 않는 경우의 수
 			}
