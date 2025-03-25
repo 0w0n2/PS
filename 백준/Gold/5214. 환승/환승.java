@@ -23,7 +23,6 @@ public class Main {
 		int N = Integer.parseInt(st.nextToken()); // 역의 수(노드 개수) N
 		int K = Integer.parseInt(st.nextToken()); // 한 하이퍼튜브가 서로 연결하는 역의 개수
 		int M = Integer.parseInt(st.nextToken()); // 하이퍼 튜브의 개수
-		// 간선 개수 : K*M
 
 		ArrayList<ArrayList<Integer>> map = new ArrayList<>(); 
 		for (int i=0;i<=N+M;i++) map.add(new ArrayList<>()); // 1~N = 노드, N+1~N+M = 하이퍼 링크
@@ -49,9 +48,10 @@ public class Main {
 			if (dist[current.v]!=current.ct) continue;
 			
 			for (Integer nextPoint : map.get(current.v)) { // current.v 가 가지고 있는 하이퍼 튜브 조회
-				if (dist[nextPoint]>current.ct + 1) {
-					dist[nextPoint] = nextPoint>N ? current.ct : current.ct+1;
-					pq.offer(new Node(nextPoint, dist[nextPoint]));
+				int nct = nextPoint>N ? current.ct : current.ct+1;
+				if (dist[nextPoint]>nct) {
+					dist[nextPoint] = nct;
+					pq.offer(new Node(nextPoint, nct));
 				}
 			}
 		}
