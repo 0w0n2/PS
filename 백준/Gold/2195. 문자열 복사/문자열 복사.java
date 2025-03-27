@@ -6,12 +6,12 @@ public class Main {
 		String S = br.readLine();
 		String P = br.readLine();
 		
+		int L = 0;
 		
-		StringBuilder makeP = new StringBuilder();
 		int idx = 0;
 		int ct = 0;
 		
-		while(makeP.length()<P.length()) {
+		while(L<P.length()) {
 			StringBuilder temp = new StringBuilder();
 			while (idx<P.length()) {
 				temp.append(P.charAt(idx));
@@ -22,7 +22,7 @@ public class Main {
 				idx++;
 				
 			}
-			makeP.append(temp); 
+			L += temp.length();
 			ct++;
 		}
 		System.out.print(ct);
