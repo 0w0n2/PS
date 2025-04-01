@@ -9,17 +9,22 @@ public class Main {
 			this.color = color;
 		}
 	}
+	
+	static StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
+	static int inputInt() throws IOException {
+		st.nextToken();
+		return (int) st.nval;
+	}
+	
 	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
+		int N = inputInt();
 		
 		ArrayList<ArrayList<Ball>> b = new ArrayList<>();
 		for (int i=0;i<=2000;i++) b.add(new ArrayList<>());
 		
 		for (int i=0;i<N;i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int color = Integer.parseInt(st.nextToken());
-			int size = Integer.parseInt(st.nextToken());
+			int color = inputInt();
+			int size = inputInt();
 			b.get(size).add(new Ball(i, color));
 		}
 		
