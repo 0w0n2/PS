@@ -2,43 +2,45 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static class Ball implements Comparable<Ball>{
-		int idx, size, color;
-		Ball(int idx, int size, int color){
+	static class Ball {
+		int idx, color;
+		Ball(int idx, int color){
 			this.idx = idx;
-			this.size = size;
 			this.color = color;
-		}
-		@Override
-		public int compareTo(Ball o) {
-			return this.size-o.size;
 		}
 	}
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		Ball[] b = new Ball[N];
+		
+		ArrayList<ArrayList<Ball>> b = new ArrayList<>();
+		for (int i=0;i<=2000;i++) b.add(new ArrayList<>());
+		
 		for (int i=0;i<N;i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int color = Integer.parseInt(st.nextToken());
 			int size = Integer.parseInt(st.nextToken());
-			b[i] = new Ball(i, size, color);
+			b.get(size).add(new Ball(i, color));
 		}
-		Arrays.sort(b);
 		
 		int[] result = new int[N];
 		int[] prefixSumPerColor = new int[N+1];
 		int total = 0;
-		int si = 0;
-		
-		for (int i=0;i<N;i++) {
-			while(b[si].size<b[i].size) {
-				total += b[si].size;
-				prefixSumPerColor[b[si].color] += b[si].size;
-				si++;
+
+		for (int i=1;i<=2000;i++) {
+			ArrayList<Ball> bi = b.get(i);
+			if (bi.isEmpty()) continue;
+			
+			for (int j=0;j<bi.size();j++) {
+				result[bi.get(j).idx] = total - prefixSumPerColor[bi.get(j).color];
 			}
-			result[b[i].idx] = total - prefixSumPerColor[b[i].color];
+			for (int j=0;j<bi.size();j++) {
+				prefixSumPerColor[bi.get(j).color] += i;
+				total += i;
+			}
 		}
+		
+		// 출력
 		StringBuilder sb = new StringBuilder();
 		for (int i:result) sb.append(i).append("\n");
 		System.out.print(sb);
