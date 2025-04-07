@@ -1,42 +1,37 @@
-
-
-import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int n;
-    static int[] T, P;
-    static int max = 0;
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
-        T = new int[n];
-        P = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            T[i] = Integer.parseInt(st.nextToken());
-            P[i] = Integer.parseInt(st.nextToken());
-        } // 입력
-
-        cal(0, 0);
-        System.out.println(max);
-    }
-
-    public static void cal(int day, int sum) {
-        // 현재 날짜가 N일을 넘어가는 경우 수익의 최대값 책정
-        if (day >= n) {
-            max = Math.max(max, sum);
-            return;
-        }
-
-        // 그날 상담 선택 (But, 상담 후 날짜가 퇴사일(N+1)을 넘기면 X
-        if (day + T[day] <= n) { 
-            cal(day + T[day], sum + P[day]);
-        }
-
-        // 그날 상담 선택 ㄴㄴ
-        cal(day + 1, sum);
-    }
+	private static StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
+	private static int readInt() throws IOException {
+		st.nextToken();
+		return (int) st.nval;
+	}
+	
+	private static class Edge{
+		int T, P;
+		Edge(int T, int P){
+			this.T = T;
+			this.P = P;
+		}
+	}
+	
+	public static void main(String[] args) throws IOException{
+		// 입력 받기
+		int N = readInt();
+		Edge[] plan = new Edge[N];
+		for (int i=0;i<N;i++) plan[i] = new Edge(readInt(), readInt());
+		
+		// DP 풀이
+		int[] dp = new int[N+1];
+		for (int i=0;i<N;i++) {
+			dp[i+1] = Math.max(dp[i+1], dp[i]); // 상담 X
+			
+			// 상담 O
+			Edge c = plan[i];
+			if (i+c.T<=N) dp[i+c.T] = Math.max(dp[i+c.T], dp[i]+c.P);
+		}
+		
+		// 최대값 구하기
+		System.out.print(dp[N]);
+	}
 }
