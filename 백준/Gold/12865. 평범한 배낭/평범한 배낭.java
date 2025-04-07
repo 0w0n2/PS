@@ -1,41 +1,59 @@
-
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int [][] dp = new int [101][100001]; // 몇번째 물건부터 선택했을 때, 가치의 최대는?
-    static int N;
-    static int K;
-    static int [] weight = new int [101];
-    static int [] value = new int [101];
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken()); // 물품의 수 (최대 : 101)
-        K = Integer.parseInt(st.nextToken()); // 최대 허용 무게 (최대 : 100,001)
-
-        for (int i=1; i<=N; i++) {
-            st = new StringTokenizer(br.readLine());
-            weight[i] = Integer.parseInt(st.nextToken());
-            value[i] = Integer.parseInt(st.nextToken());
-        } // 입력 완
-
-        for (int i=1; i<=N; i++){
-            for (int j=1; j<=K; j++){
-                if (weight[i]<=j){
-                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-weight[i]]+value[i]);
-                } else {
-                    dp[i][j] = dp[i-1][j];
-                }
-            }
-        }
-
-        System.out.println(dp[N][K]);
-    }
-
+	
+	private static StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
+	private static int readInt() throws IOException {
+		st.nextToken();
+		return (int) st.nval;
+	}
+	
+	private static class Edge{
+		int weight, value;
+		Edge(int weight, int value){ // 물건 별 (무게, 가치)
+			this.weight = weight; 
+			this.value = value;
+		}
+	}
+	
+	// N개의 물건이 있는데 물건마다 (W(무게), V(가치)) 값을 가짐
+	// 물건 중복 선택 불가능
+	// 최대 K 무게를 넘기지 않는 선에서 V(가치)의 총합이 최대가 되는 경우 찾기
+	
+	public static void main(String[] args) throws IOException{
+		N = readInt(); // 물품 수
+		K = readInt(); // 버틸 수 있는 무게, K
+		
+		product = new Edge[N];
+		for (int i=0;i<N;i++) product[i] = new Edge(readInt(), readInt()); // 물건별 무게, 가치 입력
+		
+		dp = new int[N+1][K+1]; // 어떤 물건들을 조합해서 만들 수 있는 무게 별 가치 최대 값 저장
+		for (int i=0;i<=N;i++) Arrays.fill(dp[i], -1);
+		System.out.println(recursive(0, 0));
+	}
+	
+	static Edge[] product;
+	static int N, K, dp[][];
+	
+	private static int recursive(int idx, int weightSum) {
+		
+		if (idx==N) return 0;
+		
+		if (dp[idx][weightSum]!=-1) {
+			return dp[idx][weightSum];
+		}
+		
+		// idx번째 물건 선택 X
+		int result = recursive(idx+1, weightSum);
+		
+		// idx번째 물건 선택 O
+		int v = product[idx].value;
+		int w = product[idx].weight;
+		if (weightSum+w<=K) {
+			result = Math.max(result, recursive(idx+1, weightSum+w)+v);
+		}
+		
+		return dp[idx][weightSum] = result;
+	}
 }
