@@ -1,5 +1,9 @@
-import java.util.*;
 import java.io.*;
+
+/**
+ * Java8 | 메모리: 12,192kB, 시간: 112ms
+ *
+ */
 
 public class Main {
 	
@@ -33,6 +37,8 @@ public class Main {
 			int v = product[i].value;
 			int w = product[i].weight;
 			
+			// 중복 불가 조합
+			// 특정 무게 "weight"를 만들기 위해, i번째 물건(무게: w)를 선택하지 않은 상태(dp[weight]), 선택한 상태(dp[weight-w]+v) 중 더 큰 값을 고름 
 			for (int weight=K; weight-w>=0;weight--) {
 				dp[weight] = Math.max(dp[weight], dp[weight-w]+v);
 			}
