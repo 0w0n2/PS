@@ -1,7 +1,13 @@
 import java.util.*;
 import java.io.*;
 
+// 레벨 별 BFS 탐색
+/**
+ * 
+ */
+
 public class Main {
+	
 	private static class Cor{
 		int x, y;
 		Cor(int x, int y){
@@ -56,6 +62,7 @@ public class Main {
 		gogosum.add(gosum);
 		isVisited[gosum.x][gosum.y] = true;
 		
+		// 레벨 별 BFS 탐색
 		int time = 0;
 		while(!gogosum.isEmpty()) {
 			time++;
