@@ -1,4 +1,3 @@
-import java.util.*;
 import java.io.*;
 
 public class Main {
@@ -19,7 +18,10 @@ public class Main {
 		
 		if (a==b) return;
 		
-		par[a] = b;
+		if (a>b) par[b] = a;
+		else par[a] = b;
+		
+		return;
 	}
 	
 	static int par[] = new int[1_000_001];
@@ -32,9 +34,7 @@ public class Main {
 			sb.append("Scenario ").append(t).append(":\n");
 			
 			int N = readInt(); // 유저의 수
-			for (int i=0;i<=N;i++) {
-				par[i] = -1;
-			}
+			for (int i=0;i<=N;i++) par[i] = -1;
 			
 			int K = readInt(); // 친구 관계의 수
 			for (int i=0;i<K;i++) {
