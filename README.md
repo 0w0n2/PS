@@ -3,4 +3,4 @@
 - [✅ BOJ 프로필](https://solved.ac/profile/0w0n)  
 
 <!-- ![2월부터달라집니다](etc/Gin0-pnbYAE4bPy.jpg) -->
-![4월부터달라집니다](etc/april.jpg)
+![5월부터달라집니다](etc/may.jpg)
