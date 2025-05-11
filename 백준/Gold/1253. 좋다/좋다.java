@@ -3,16 +3,13 @@ import java.io.*;
 
 public class Main {
 	
-	private static StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
-	private static int readInt() throws IOException{
-		st.nextToken();
-		return (int) st.nval;
-	}
-	
 	public static void main(String[] args) throws IOException{
-		N = readInt(); // 수의 개수 (1<=N<=2_000)
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		N = Integer.parseInt(br.readLine()); // 수의 개수 (1<=N<=2_000)
 		arr = new int[N];
-		for (int i=0;i<N;i++) arr[i] = readInt(); // i개 수 (|Ai|<=1_000_000_000) *2 해도 2억 안 넘음
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i=0;i<N;i++) arr[i] = Integer.parseInt(st.nextToken()); // i개 수 (|Ai|<=1_000_000_000) *2 해도 2억 안 넘음
 		
 		Arrays.sort(arr); // 오름차순 정렬
 		
