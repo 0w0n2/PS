@@ -1,4 +1,5 @@
-import java.util.*;
+// Node(min, max) 로 하나의 트리에 최댓값/최솟값 모두 저장하던 구조 -> minTree, maxTree 로 분리
+
 import java.io.*;
 
 // a번째 정수부터 b번째 정수까지 중에서 제일 작은 정수, 또는 제일 큰 정수
@@ -7,24 +8,24 @@ public class Main {
 
     private static class SegTree{
         int size, start;
-        Node[] arr;
+        int[] minTree;
+        int[] maxTree;
 
         SegTree(int n){
             size = n;
             start = 1;
 
             while(start < size) start <<= 1;
-            arr = new Node[start * 2];
-
-            for (int i=0; i<start*2; i++) arr[i] = new Node();
+            minTree = new int[start*2];
+            maxTree = new int[start*2];
         }
         
         // 선입력 받은 리프 노드로 전체 세그먼트 트리 구성
         // 하나의 공간은 그 구간의 최솟값, 최댓값을 가지고 있음
         void construct(){
             for (int i=start-1; i>0; i--) {
-                arr[i].min = Math.min(arr[i*2].min, arr[i*2+1].min);
-                arr[i].max = Math.max(arr[i*2].max, arr[i*2+1].max);
+                minTree[i] = Math.min(minTree[i*2], minTree[i*2+1]);
+                maxTree[i] = Math.max(maxTree[i*2], maxTree[i*2+1]);
             }
         }
         
@@ -38,13 +39,13 @@ public class Main {
             while (a <= b){ // a 와 b 가 겹칠 때까지 왼쪽/오른쪽에서 가운데로 좁혀오도록 이동 (최고 높이의 공통 부모 노드까지 이동)
                 // 구간을 쪼갰을 때 양쪽 경계에 걸쳐 있는 예외 노드를 따로 챙겨주자
                 if ((a&1)==1){ // (1) a가 부모 노드의 오른쪽 노드일 때
-                    min = Math.min(min, arr[a].min);
-                    max = Math.max(max, arr[a].max);
+                    min = Math.min(min, minTree[a]);
+                    max = Math.max(max, maxTree[a]);
                     a++;
                 }
                 if ((b&1)==0){ // (2) b가 부모 노드의 왼쪽 노드일 때
-                    min = Math.min(min, arr[b].min);
-                    max = Math.max(max, arr[b].max);
+                    min = Math.min(min, minTree[b]);
+                    max = Math.max(max, maxTree[b]);
                     b--;
                 }
                 a >>= 1; // 다음 부모 노드로 올라감
@@ -73,7 +74,7 @@ public class Main {
         SegTree st = new SegTree(N);
 
         for (int i=0;i<N;i++){
-            st.arr[st.start + i].min = st.arr[st.start + i].max = readInt();    // 리프노드 입력
+            st.minTree[st.start + i] = st.maxTree[st.start + i] = readInt();    // 리프노드 입력
         }
         st.construct(); // 전체 세그먼트 트리 구성
 
