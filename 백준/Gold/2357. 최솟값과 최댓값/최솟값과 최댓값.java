@@ -57,10 +57,6 @@ public class Main {
 
     private static class Node{
         int min, max;
-        Node(){
-            min = Integer.MAX_VALUE;
-            max = Integer.MIN_VALUE;
-        }
         Node(int min, int max){
             this.min = min;
             this.max = max;
