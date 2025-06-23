@@ -3,44 +3,41 @@ import java.io.*;
 
 public class Main {
 
-    private static class Point implements Comparable<Point>{
+    private static class Line implements Comparable<Line>{
         int start, end;
 
-        public Point(int start, int end) {
+        public Line(int start, int end) {
             this.start = start;
             this.end = end;
         }
 
         @Override
-        public int compareTo(Point o) {
-            return (this.start!=o.start) ? Integer.compare(this.start, o.start)
-                    : Integer.compare(this.end, o.end);
+        public int compareTo(Line o) {
+            return Integer.compare(this.start, o.start);
         }
     }
 
     public static void main(String[] args) throws IOException {
         int N = readInt();
-        PriorityQueue<Point> q = new PriorityQueue<>();
+        PriorityQueue<Line> pq = new PriorityQueue<>();
 
         for (int i=0;i<N;i++){
-            q.offer(new Point(readInt(), readInt()));
+            pq.offer(new Line(readInt(), readInt()));
         }
 
-        Point last = q.poll();
+        int end = Integer.MIN_VALUE;
         int result = 0;
 
-        while(!q.isEmpty()){
-            Point cur = q.poll();
-            if (last.start <= cur.start && cur.start <= last.end){
-                last.end = Math.max(last.end, cur.end);
-            } else {
-                result += Math.abs(last.end - last.start);
-                last.start = cur.start;
-                last.end = cur.end;
+        while(!pq.isEmpty()){
+            Line cur = pq.poll();
+            if (cur.start < end && cur.end > end){
+                result += cur.end - end;
+                end = cur.end;
+            } else if (cur.start >= end){
+                result += cur.end - cur.start;
+                end = cur.end;
             }
         }
-
-        result += Math.abs(last.end - last.start);
 
         System.out.print(result);
 
