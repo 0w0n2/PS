@@ -12,27 +12,20 @@ public class Main {
         dp[0][0][0] = 1;
 
         for (int day=1;day<=N;day++){
-            int cur = day % 2;
-            int prev = (day + 1)%2;
-
+            int cur = day&1;
+            int prev = cur^1;
             for (int l=0;l<=MAX_LATE;l++) Arrays.fill(dp[cur][l], 0);
-
             for (int l=0;l<=MAX_LATE;l++){
-                for (int a = 0; a<= MAX_ABSENT; a++){
+                for (int a=0;a<=MAX_ABSENT;a++){
                     if (dp[prev][l][a]==0) continue;
-
-                    dp[cur][l][0] = (dp[cur][l][0] + dp[prev][l][a]) % MOD; // 출석
-                    if (a< MAX_ABSENT) dp[cur][l][a+1] = (dp[cur][l][a+1] + dp[prev][l][a]) % MOD; // 결석 (지각 수 그대로, 연속 결석 수+1)
+                    dp[cur][l][0] = (dp[cur][l][0] + dp[prev][l][a]) % MOD; // 출석(지각 유지, 결석 초기화)
+                    if (a<MAX_ABSENT) dp[cur][l][a+1] = (dp[cur][l][a+1] + dp[prev][l][a]) % MOD; // 결석 (지각 수 그대로, 연속 결석 수+1)
                     if (l<MAX_LATE) dp[cur][l+1][0] = (dp[cur][l+1][0] + dp[prev][l][a]) % MOD; // 지각 (지각 수+1, 결석 수 0으로)
                 }
             }
         }
         int result = 0;
-        for (int l=0;l<=MAX_LATE;l++) {
-            for (int a = 0; a<= MAX_ABSENT; a++){
-                result = (result + dp[N%2][l][a]) % MOD;
-            }
-        }
+        for (int[] i:dp[N%2]) for (int j:i) result = (result+j) % MOD;
         System.out.print(result);
 
     }
