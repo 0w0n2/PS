@@ -1,4 +1,4 @@
-# [Platinum IV] 체커 - 1090 
+# [Platinum V] 체커 - 1090 
 
 [문제 링크](https://www.acmicpc.net/problem/1090) 
 
