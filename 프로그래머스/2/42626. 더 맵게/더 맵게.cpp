@@ -4,11 +4,10 @@
 using namespace std;
 
 int solution(vector<int> scoville, int K) {
-    priority_queue<int, vector<int>, greater<int>> pq; // 최소 힙
-    
-    for (int s : scoville) {
-        pq.push(s);
-    }
+    priority_queue<int, vector<int>, greater<int>> pq(
+		    scoville.begin(), // 이렇게 바로 pq에 벡터 값을 직접 넣을 수 있음(for문 순회를 직접 안 해도 된다)
+		    scoville.end()
+    ); // 최소 힙
     
     int step = 0;
     while (pq.size() >= 2 && pq.top() < K) {        
