@@ -1,10 +1,10 @@
 # [level 1] K번째수 - 42748 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42748) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42748?language=cpp) 
 
 ### 성능 요약
 
-메모리: 88.1 MB, 시간: 1.34 ms
+메모리: 5.07 MB, 시간: 0.01 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 01월 07일 23:02:37
+2026년 06월 28일 01:17:01
 
 ### 문제 설명
 
