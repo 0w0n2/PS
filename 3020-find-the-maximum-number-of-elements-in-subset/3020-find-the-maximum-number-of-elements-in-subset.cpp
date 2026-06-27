@@ -9,6 +9,9 @@ public:
     int maximumLength(vector<int>& nums) {
         unordered_map<long long, int> num2ct; // 숫자 별 개수
 
+        num2ct.reserve(nums.size() * 2);
+        num2ct.max_load_factor(0.7);
+
         for (int num : nums) {
             num2ct[num]++;
         }
