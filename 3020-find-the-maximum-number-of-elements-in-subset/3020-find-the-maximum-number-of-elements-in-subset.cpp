@@ -9,36 +9,48 @@ public:
     int maximumLength(vector<int>& nums) {
         unordered_map<long long, int> num2ct; // 숫자 별 개수
 
-        int oneCt = 0;
         for (int num : nums) {
-            if (num == 1) { // 1 아닌 것만 담기
-                oneCt++;
-            } else {
-                num2ct[num]++;
-            }
+            num2ct[num]++;
         }
 
         int answer = 1; // 1개 원소 부분수열
 
         // 1만으로 채워진 부분수열
-        if (oneCt > 0) {
-            answer = (oneCt % 2 == 1) ? oneCt : oneCt - 1;
+        if (num2ct.count(1) > 0) {
+            answer = (num2ct[1] % 2 == 1) ? num2ct[1] : num2ct[1] - 1;
         }
 
         // 그 외 부분수열 계산
-        for (auto [num, ct] : num2ct) {
+        for (const auto& [num, ct] : num2ct) {
+            if (num == 1) {
+                continue;
+            }
+
             long long cur = num;
             int length = 0;
 
-            while (num2ct.count(cur) && num2ct[cur] >= 2) { // .count() => HashMap.containsKey()
-                length += 2;
-                cur *= cur; // (x^2)^2
-            }
+            while (true) {
+                // key=cur인 원소의 위치를 반환
+                // 없으면 .end()를 반환
+                auto it = num2ct.find(cur); // iterator
 
-            if (cur != -1 && num2ct.count(cur) && num2ct[cur] >= 1) { 
-                length += 1;
-            } else {
-                length -= 1; // 여기서 끝
+                // pair<const long long, int>
+                // -> first = key, secont = value
+                // 그런데 it는 pair 자체가 아니라 pair를 가리키는 iterator라서 it.second 이렇겐 못 부르고
+                // it->second (== (*it).second) 식으로 가져와야 함
+
+                if (it == num2ct.end()) { // key=cur인 원소가 없음(num2ct.end()) -> 이어갈 수 없다
+                    length--;
+                    break;
+                }
+
+                if (it->second == 1) { // value=1, 이 숫자 개수 1개일 때 -> 탈출
+                    length++;
+                    break;
+                } 
+
+                length += 2;
+                cur *= cur;
             }
 
             answer = max(answer, length);
