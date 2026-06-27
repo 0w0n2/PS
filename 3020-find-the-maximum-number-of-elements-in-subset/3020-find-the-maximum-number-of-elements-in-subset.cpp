@@ -32,11 +32,6 @@ public:
 
             while (num2ct.count(cur) && num2ct[cur] >= 2) { // .count() => HashMap.containsKey()
                 length += 2;
-
-                if (cur > 1000000000LL / cur) {
-                    cur = -1;
-                    break;
-                }
                 cur *= cur; // (x^2)^2
             }
 
