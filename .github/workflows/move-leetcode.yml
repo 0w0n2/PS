@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - "[0-9][0-9][0-9][0-9]-*/**"
-      - "README.md"
 
 permissions:
   contents: write
@@ -33,12 +32,14 @@ jobs:
             fi
           done
 
+          echo "FOUND=$found" >> "$GITHUB_ENV"
+
           if [ $found -eq 0 ]; then
             echo "No matching directories found"
           fi
 
       - name: Restore README changed by LeetHub
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && env.FOUND == '1'
         run: |
           if [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
             git restore --source="${{ github.event.before }}" -- README.md || true
