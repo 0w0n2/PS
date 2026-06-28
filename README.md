@@ -11,3 +11,19 @@
         <img src="http://mazassumnida.wtf/api/v2/generate_badge?boj=0w0n" alt="Solved.ac 프로필"/>  
     </div>
 </div>
+
+<!---LeetCode Topics Start-->
+# LeetCode Topics
+## Array
+|  |
+| ------- |
+| [1846-maximum-element-after-decreasing-and-rearranging](https://github.com/0w0n2/PS/tree/master/1846-maximum-element-after-decreasing-and-rearranging) |
+## Greedy
+|  |
+| ------- |
+| [1846-maximum-element-after-decreasing-and-rearranging](https://github.com/0w0n2/PS/tree/master/1846-maximum-element-after-decreasing-and-rearranging) |
+## Sorting
+|  |
+| ------- |
+| [1846-maximum-element-after-decreasing-and-rearranging](https://github.com/0w0n2/PS/tree/master/1846-maximum-element-after-decreasing-and-rearranging) |
+<!---LeetCode Topics End-->
