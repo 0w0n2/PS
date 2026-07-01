@@ -56,7 +56,7 @@ public:
             }
         }
 
-        // 도둑과의 거리가 최소가 되는 경로 탐색
+        // 도둑과의 거리가 최대가 되는 경로 탐색
         priority_queue<Node> pq;
         vector<vector<bool>> isVisited(n, vector<bool>(n, false));
 
