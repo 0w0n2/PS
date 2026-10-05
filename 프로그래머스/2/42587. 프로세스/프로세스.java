@@ -1,22 +1,32 @@
 import java.util.*;
 
 class Solution {
-    
+    // 같은 우선순위를 가진 프로세스가 여러 개 있을 수 있음
     public int solution(int[] priorities, int location) {
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-        for (int p:priorities) pq.offer(p);
+        Queue<int[]> q = new ArrayDeque<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> o2 - o1); // 내림차순 정렬
         
-        int i, ct;
-        i = ct = 0;
-        while (!pq.isEmpty()) {
-            if ((priorities[i]!=-1) && (pq.peek()==priorities[i])) {
-                pq.poll();
-                priorities[i] = -1;
-                ct++;
-                if (i==location) return ct;
-            }
-            i = (i+1)%priorities.length;
+        for (int i=0; i<priorities.length; i++) {
+            q.offer(new int[]{i, priorities[i]}); // [idx, 우선순위]
+            pq.offer(priorities[i]);
         }
-        return 0;
+        
+        int res = 0;
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            
+            if (cur[1] == pq.peek()) {
+                pq.poll();
+                res++;
+                
+                if (cur[0] == location) {
+                    return res;
+                }
+            } else {
+                q.offer(cur);
+            }
+        }
+        
+        return res;
     }
 }
