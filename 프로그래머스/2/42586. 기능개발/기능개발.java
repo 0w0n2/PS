@@ -2,25 +2,33 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        ArrayList<Integer> arr = new ArrayList<>();
+        ArrayList<Integer> ans = new ArrayList<>();
         
-        Queue<Integer> q = new ArrayDeque<>();
-        for (int i=0;i<progresses.length;i++) {
-            q.add((100-progresses[i]+speeds[i]-1)/speeds[i]);
-        }
+        int goalDate = getDate(progresses[0], speeds[0]);
+        int ct = 1;
         
-        while(!q.isEmpty()) {
-            int ct = 1;
-            int cur = q.poll(); // 이것보다 작은 것들 모두 꺼낼 수 있음
-            while (!q.isEmpty() && (cur >= q.peek())) {
-                q.poll();
+        for (int i=1; i<progresses.length; i++) {
+            int curDate = getDate(progresses[i], speeds[i]);
+            
+            if (curDate <= goalDate) { // 같이 배포
                 ct++;
+            } else { // 다음 배포일로 넘김
+                ans.add(ct);
+                ct = 1;
+                goalDate = curDate;
             }
-            arr.add(ct);
         }
         
-        int[] result = new int[arr.size()];
-        for (int i=0;i<arr.size();i++) result[i] = arr.get(i);
-        return result;
+        ans.add(ct);
+        
+        int[] res = new int[ans.size()];
+        for (int i=0; i<ans.size(); i++) res[i] = ans.get(i);
+        
+        return res;
+    }
+    
+    private int getDate(int p, int s) {
+        int diff = 100 - p;
+        return (diff + s - 1) / s; 
     }
 }
