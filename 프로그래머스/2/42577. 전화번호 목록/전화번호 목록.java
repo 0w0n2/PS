@@ -1,36 +1,51 @@
 class Solution {
+    
     private static class Node{
         Node[] childNodes = new Node[10]; // 0~9
         boolean isEndOfWord = false;
     }
     
+    // 새로운 전화번호를 삽입하고, 접두어 여부를 반환
     private boolean insert(Node root, String phone) {
         Node cur = root;
-        for (int i=0;i<phone.length();i++) {
+        
+        for (int i=0; i<phone.length(); i++) {
             int num = phone.charAt(i) - '0';
-            if (cur.childNodes[num]==null) {
-                cur.childNodes[num] = new Node();   // 자식 노드가 없다면 새로 생성
+            
+            // 자식 노드가 없을 경우 신규 생성
+            if (cur.childNodes[num] == null) {
+                cur.childNodes[num] = new Node();
             }
             
-            cur = cur.childNodes[num];  // 포인터 노드 갱신
-            if (cur.isEndOfWord) return false; // 다른 phone의 끝 -> 현재 번호가 더 긴데 중간에 짧은 번호가 이미 있씀
-        }
-        
-        // 번호 삽입을 마쳤는데 이 노드에 이미 자식드리 있음(누군가의 접두사)
-        for (int i=0;i<10;i++) if (cur.childNodes[i] != null) return false; 
-        
-        cur.isEndOfWord = true; // 여기가 이 번호의 끝
-        return true;
-    }
-    
-    
-    public boolean solution(String[] phone_book) {
-        Node root = new Node();
-        for (String number:phone_book) {
-            if (!insert(root, number)) {
+            cur = cur.childNodes[num];
+            
+            if (cur.isEndOfWord) {
                 return false;
             }
         }
+        
+        // 번호 전체 삽입 후
+        
+        for (Node c : cur.childNodes) {
+            if (c != null) {
+                return false;
+            }
+        }
+        
+        cur.isEndOfWord = true; 
+        
+        return true;
+    }
+    
+    public boolean solution(String[] phone_book) {
+        Node root = new Node();
+        
+        for (String phone : phone_book) {
+            if (!insert(root, phone)) {
+                return false;
+            }
+        }
+        
         return true;
     }
 }
