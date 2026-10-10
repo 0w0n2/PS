@@ -1,8 +1,7 @@
 import java.util.*;
 
 class Solution {
-    private int totalCt; // 총 티켓 개수
-    private boolean[] isUsed;
+    private boolean[] isVisited;
     private String[] ans;
     
     public String[] solution(String[][] tickets) {
@@ -12,36 +11,36 @@ class Solution {
             return cmp != 0 ? cmp : a[1].compareTo(b[1]);
         });
         
-        totalCt = tickets.length;
-        isUsed = new boolean[totalCt];
-        ans = new String[totalCt+1];
-        
+        isVisited = new boolean[tickets.length];
+        ans = new String[tickets.length + 1];
         ans[0] = "ICN";
-        dfs(tickets, 1);
+        
+        dfs(tickets, "ICN", 0);
         
         return ans;
     }
     
-    private boolean dfs(String[][] tickets, int curCt) {
+    private boolean dfs(String[][] tickets, String curCity, int visitedCt) {
         // 모든 티켓 사용 완료
-        if (curCt == totalCt + 1) { 
+        if (visitedCt == tickets.length) { 
             return true;
         }
     
-        for (int i=0; i<totalCt; i++) {
-            if (isUsed[i]) continue;
-            if (!tickets[i][0].equals(ans[curCt-1])) continue;
+        for (int i=0; i < tickets.length; i++) {
+            if (isVisited[i] || !tickets[i][0].equals(curCity)) {
+                continue;
+            }
             
-            // 티켓 사용
-            ans[curCt] = tickets[i][1];
-            isUsed[i] = true;
+            
+            isVisited[i] = true;
+            ans[visitedCt + 1] = tickets[i][1];
             
             // 정답을 찾은 최초 1회 종료
-            if (dfs(tickets, curCt + 1)) {
+            if (dfs(tickets, tickets[i][1], visitedCt + 1)) {
                 return true;
             }
             
-            isUsed[i] = false;
+            isVisited[i] = false;
         }
         
         return false;
