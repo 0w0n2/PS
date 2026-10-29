@@ -16,11 +16,9 @@ class Solution {
         
         for (int i=0; i<n; i++) {
             for (int j=0; j<m; j++) {
-                if (maps[i].charAt(j) == 'X' || isVisited[i][j]) {
-                    continue;
+                if (isValid(i, j, maps)) {
+                    ansList.add(bfs(i, j, maps));
                 }
-                
-                ansList.add(bfs(i, j, maps));
             }
         }
         
@@ -54,15 +52,17 @@ class Solution {
                 int nx = cur[0] + dx[k];
                 int ny = cur[1] + dy[k];
                 
-                if (nx<0 || nx>=n || ny<0 || ny>=m || isVisited[nx][ny] || maps[nx].charAt(ny) == 'X') {
-                    continue;
+                if (isValid(nx, ny, maps)) {
+                    isVisited[nx][ny] = true;
+                    q.offer(new int[]{nx, ny});
                 }
-                
-                isVisited[nx][ny] = true;
-                q.offer(new int[]{nx, ny});
             }
         }
         
         return totalSum;
+    }
+    
+    private boolean isValid(int i, int j, String[] maps) {
+        return i>=0 && i<n && j>=0 && j<m && !isVisited[i][j] && maps[i].charAt(j) != 'X';
     }
 }
